@@ -13,6 +13,7 @@ The project lasts one week.
 Scrivi uno script bash o python che conta il numero di file script in una directory raggruppandoli in base allo shebang interpreter. 
 
 Esempio di output: 
+```bash
 $ contaScript /usr/bin
 81 #!/usr/bin/perl
 52 #!/usr/bin/perl5.18
@@ -20,7 +21,7 @@ $ contaScript /usr/bin
 44 #!/usr/bin/perl5.28
 22 #!/usr/sbin/dtrace -s
 ...
-
+```
 ### Exercise 2
 Scrivi una stringa crontab che ogni domenica notte crea un backup della cartella /home/user e lo invia ad un server remoto raggiungibile tramite SSH con user@192.168.1.100 
 (indica quale configurazione potrebbe essere necessaria per gestire l'autenticazione sul server remoto).
