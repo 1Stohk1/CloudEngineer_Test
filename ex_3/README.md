@@ -4,10 +4,10 @@
             <img src ="https://th.bing.com/th/id/R.bee4ebb7f8c7dc93de823ae3e04a249e?rik=QAB1%2bVSa9qn1vQ&pid=ImgRaw&r=0" width="20%">
         </div>
         <div>
-            <img src ="https://logodix.com/logo/1638898.png" width="40%">
+            <img src ="https://logodix.com/logo/1638898.png" width="20%">
         </div>
         <div>
-            <img src ="https://freepngdesign.com/content/uploads/images/p-1678-9-aws-cloudformation-logo-png-transparent-logo-342639433788.png" width="60%">
+            <img src ="https://freepngdesign.com/content/uploads/images/p-1678-9-aws-cloudformation-logo-png-transparent-logo-342639433788.png" width="20%">
         </div>
     </div>
 
