@@ -1,5 +1,5 @@
 # Create a Web Host based on WordPress FE
-<div position="relative"
+<div 
 <p align="right" 
    position="absolute"
    vertical-align= "middle"; >
