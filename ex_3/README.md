@@ -1,15 +1,15 @@
 # Create a Web Host based on WordPress FE
 <div 
-<p align="right" 
-   position="absolute"
-   vertical-align= "middle"; >
-  <img src="https://th.bing.com/th/id/R.bee4ebb7f8c7dc93de823ae3e04a249e?rik=QAB1%2bVSa9qn1vQ&pid=ImgRaw&r=0" alt="WordPress" width="20%"/>
-</p>
-<p align="left"
-   position="absolute"
-   vertical-align= "middle"; >
-  <img src="https://logodix.com/logo/1638898.png" alt="NGINX" width="20%"/>
-</p>
+   <p align="right";
+      position="absolute";
+      vertical-align= "middle"; >
+     <img src="https://th.bing.com/th/id/R.bee4ebb7f8c7dc93de823ae3e04a249e?rik=QAB1%2bVSa9qn1vQ&pid=ImgRaw&r=0" alt="WordPress" width="20%"/>
+   </p>
+   <p align="left";
+      position="absolute";
+      vertical-align= "middle"; >
+     <img src="https://logodix.com/logo/1638898.png" alt="NGINX" width="20%"/>
+   </p>
 </div>
 
 Bisogna utilizzare NGINX per la sua alta efficienza nel gestire diverse connessioni sincrone sulla macchina, optando che il cliente che sta aprendo il sito web sia una società in crescita.
