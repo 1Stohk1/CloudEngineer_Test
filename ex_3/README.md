@@ -1,20 +1,22 @@
 # Create a Web Host based on WordPress FE
-<div id="banner" style="overflow: hidden; display: flex; justify-content:space-around;">
-        <div>
-            <img src ="https://th.bing.com/th/id/R.bee4ebb7f8c7dc93de823ae3e04a249e?rik=QAB1%2bVSa9qn1vQ&pid=ImgRaw&r=0" width="20%">
-        </div>
-        <div>
-            <img src ="https://logodix.com/logo/1638898.png" width="20%">
-        </div>
-        <div>
-            <img src ="https://freepngdesign.com/content/uploads/images/p-1678-9-aws-cloudformation-logo-png-transparent-logo-342639433788.png" width="20%">
-        </div>
-    </div>
+<img src="https://th.bing.com/th/id/R.bee4ebb7f8c7dc93de823ae3e04a249e?rik=QAB1%2bVSa9qn1vQ&pid=ImgRaw&r=0" alt="WordPress" width="20%">
+<img src="https://logodix.com/logo/1638898.png" alt="NGINX" width="20%">
+<img src ="https://freepngdesign.com/content/uploads/images/p-1678-9-aws-cloudformation-logo-png-transparent-logo-342639433788.png" width="20%" alt="AWS CF">
 
-Bisogna utilizzare NGINX per la sua alta efficienza nel gestire diverse connessioni sincrone sulla macchina, optando che il cliente che sta aprendo il sito web sia una società in crescita.
-NGINX nasce proprio dalle incapacità di Apache nel gestire il problema dei C10k che nel '99 affligeva i server. Oggi giorno se vi sono ancora numeri da parte di Apache, è dovuto anche dal fatto che esso è presente di default nella maggior parte dei sistemi operativi, una sorta di Internet Explorer dei web server, come sappiamo invecchiano male queste tipologie di software/soluzioni.
 
-Invece per quanto riguarda NGINX se configurato bene, con un Elastic Load Balancer per gestire le richieste in ingresso nel TCP/IP livello 4 (Rete), esso riesce a rendere più efficienti le richieste nel livello 7 (Applicazione), TODO: leggere come effettua questa gestione efficiente.
 
-Si va a creare una rete VPC (Virtual Private Cloud) che copre più zone di disponibilità per poter ridondare le varie subnets con tutti i loro componenti in vari territori, l'infrastruttura sarà così in grado di sopravvivere a disastri ambientali, quindi andremo ad inserirci un Internet Gateway che sarà il nostro porto di comunicazione con l'internet, dopo di che andiamo a creare un NAT Gateway per evitare traffico in ingresso indesiderato. Queste due saranno connesse tra di loro alla NAT andiamo a connettere l'instanza EC2 (che quindi verrà creata in una Subnet Privata) dove sarà presente il web server in ascolto con il relativo sito web customizzabile tramite la pagina amministratore di WordPress. Questa pipeline deve essere registrata all'interno di un servizio di terraformazione come AWS CloudFormation. In questo modo andremo a crearci un gruppo autoscalante, in grado di gestire le richieste in ingresso attraverso tecniche di ML che possono prevedere i momenti di picco e i momenti nelle quali le istanze non sono necessarie, andando così a diminuire lo spreco di risorse ed il costo dell'infrastruttura. Se vi sono necessità di rendere disponibile il servizio in aree molto distanti si può utilizzare la Route53 di AWS per inserire VPC più vicini ai clienti, l'analisi delle richieste può essere fatta dalla home page dell'amministratore dell'account o da chi ha ricevuto i permessi da questi (si usa la best practice dei permessi minimi).
+Partendo da una *Route 53* per la gestione del DNS che collegato ad un *CloudFront* per la gestione e l'instradamento più efficiente da parte di clienti sparsi per il globo, a tal fine questa scelta migliora la latenza e le prestazioni del servizio offerto, in questo caso è un sito web che potrebbe offrire servizi in real time come uno store Apple che nel drop di un item di ultima generazione fa incetta di click, ecco questa soluzione diminuirebbe il vantaggio dei clienti americani nel portarsi a casa i prodotti nel carrello nel day one. Se invece stessimo parlando di un servizio di streaming come Netflix oppure in generale una compagnia che mette a disposizione media la latenza non cambierebbe molto la fruizione del servizio quindi potremmo fare a meno di CloudFront e del suo servzio di *Content Delivery Network* (CDN).
 
+In entrambi i casi andremo a puntare il servizio ad un *Elastic Load Balancer* che gestisce il traffico in ingresso andando ad aumentare e diminuire le istanze *EC2* configurate all'interno di un *autoscaling group*, questo permette di abbattere i costi utilizzando senza sprechi le istanze quando la domanda cresce. Di fatto questo può essere configurato attraverso delle scaling policy, in base al servizio offerto per esempio un sito di scommesse come SISAL che ha un aumento delle richieste durante il fine settimana per le partite di calcio, esso può andare ad aumentare le istanze disponibili dal Venerdì e diminuirle il Martedì. Oppure si possono usare politiche che attraverso AI prevedono i picchi di domanda e accomodano i clienti di conseguenze, queste magari possono essere più utili per siti web dove non è così facile prevedere l'aumento del traffico.
+
+L'autoscaling group puntato dall'elastic load balancer quindi sarà creato all'interno di una rete privata di AWS, chiamata *Virtual Private Cloud* (VPC), dove le istanze generate dall'autoscaling group verranno sistemate all'interno di una subnet privata che comunica all'esterno attraverso l'elastic load balancer e tutti quegli indirizzi IP che riteniamo necessari per la sua manutenzione, se dovesse essercene bisogno. Questa VPC quindi andrà a ricoprire diverse *Availability Zone*, in modo tale da poter creare un infrastruttura resiliente a danni ambientali di media-larga entità. 
+
+Le istanze EC2, quindi all'interno della subnet privata, andranno a puntare ad *Amazon Realational Database Service* (RDS) che mette a disposizione in automatico un servizio altamente disponibile ed efficiente che si paga solo per l'effettivo uso del database. Inoltre essendo altamente disponibile, esso crea in automatico delle copie di backup, che nel caso di punto di fallimento vengono promosse a DB principale dal quale dopo verranno create altre repliche. Si possono andare anche a salvare degli scatti del DB all'interno di *bucket S3* che noi sappiamo essere molto affidabili e durevoli, se riteniamo i dati altamente importanti.   
+
+Per quanto riguarda il software di web hosting vero e proprio sul quale le istanze EC2 andranno a caricare il WordPress io ritengo che bisogni utilizzare NGINX per la sua alta efficienza nel gestire diverse connessioni sincrone sulla macchina, optando che il cliente che sta aprendo il sito webin crescita.
+NGINX nasce proprio dalle incapacità di Apache nel gestire il problema dei C10k che nel '99 affligeva i server. Oggi giorno se vi sono ancora numeri da parte di Apache, è dovuto anche dal fatto che esso è presente di default nella maggior parte dei sistemi operativi, una sorta di Internet Explorer dei web server, come sappiamo invecchiano male queste tipologie di soluzioni.
+
+Per automatizzare la distribuzione e la gestione dei servizi AWS anche in caso di soluzioni ibride andrei ad utilizzare il servizio di *CloudFormation*, quest'ultimo può essere configurato attraverso una serie di comandi che possono essere descritti anche all'interno di un file formattato in JSON, in questo modo l'infrastruttura può essere automatizzata vedendola come codice dal quale poi gestire tutti i servizi in essere.
+
+
+<img src ="Architecture.png" width="100%" alt="architecture">
