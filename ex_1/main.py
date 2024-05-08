@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 if __name__ == '__main__':
@@ -23,7 +25,3 @@ if __name__ == '__main__':
             print(f"There is 1 script starting with the shebang {key[:-1]}:")
         for script in script_type[key]:
             print(f"\t{script}")
-
-
-
-

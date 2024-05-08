@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create a directory, delete it if it already exists
-path_var="important_files"
+path_var="ex_1/important_files"
 if [ -d $path_var ]; then
   rm -r $path_var
 fi
